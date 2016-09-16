@@ -30,8 +30,8 @@ RSpec.describe Venue, type: :model do
   it 'should know whether it is booked for a specific date' do
     performer = Performer.create(name: 'Taylor Swift', genre: 'Pop')
     venue.save
-    Booking.new(venue_id: venue.id, performer_id: performer.id, date: 2016-09-17)
-    expect(venue.booked?(date)).to eq(true)
+    Booking.create(venue_id: venue.id, performer_id: performer.id, date: '2016-09-17')
+    expect(venue.booked?('2016-09-17')).to eq(true)
   end
   it 'should know all the performers that it has booked'
 
