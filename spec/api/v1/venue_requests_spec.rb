@@ -9,12 +9,18 @@ describe 'Venue API' do
       response_body = JSON.parse(response.body)
       expect(response).to be_success
       expect(response_body.length).to eq(2)
-      expect(response_body.first["performers"].to eq([]))
+      expect(response_body.first["performers"]).to eq([])
     end
   end
 
   describe 'get /venues/:id' do
-
+    it 'returns a JSON object describing the first venue' do
+      venue = Venue.create(name: 'Mobtown Ballroom', location: 'Baltimore', capacity: 200)
+      get "/api/v1/venues/#{venue.id}"
+      response_body = JSON.parse(response.body)
+      expect(response).to be_success
+      expect(response_body["name"]).to eq(venue.name)
+    end
   end
 
   describe 'post /venues' do
