@@ -28,11 +28,20 @@ RSpec.describe Venue, type: :model do
   end
 
   it 'should know whether it is booked for a specific date' do
-    performer = Performer.create(name: 'Taylor Swift', genre: 'Pop')
     venue.save
+    performer = Performer.create(name: 'Taylor Swift', genre: 'Pop')
     Booking.create(venue_id: venue.id, performer_id: performer.id, date: '2016-09-17')
     expect(venue.booked?('2016-09-17')).to eq(true)
   end
-  it 'should know all the performers that it has booked'
+
+  it 'should know all the performers that it has booked' do
+    venue.save
+    performer1 = Performer.create(name: 'Taylor Swift', genre: 'Pop')
+    Booking.create(venue_id: venue.id, performer_id: performer1.id, date: '2016-09-17')
+    performer2 = Performer.create(name: 'Chance the Rapper', genre: 'Hip Hop')
+    Booking.create(venue_id: venue.id, performer_id: performer2.id, date: '2016-09-20')
+
+    expect(venue.bookings.length).to eq(2)
+  end
 
 end
