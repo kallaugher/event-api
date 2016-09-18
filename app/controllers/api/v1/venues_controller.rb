@@ -13,6 +13,12 @@ module Api
       end
 
       def create
+        venue = Venue.new(venue_params)
+        if venue.save
+          render json: venue
+        else
+          render json: venue.errors, status: 500
+        end
       end
 
       def edit
@@ -23,6 +29,13 @@ module Api
 
       def destroy
       end
+
+      private
+
+      def venue_params
+        params.require(:venue).permit(:name, :location, :capacity)
+      end
+
     end
   end
 end

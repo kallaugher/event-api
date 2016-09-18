@@ -24,7 +24,30 @@ describe 'Venue API' do
   end
 
   describe 'post /venues' do
+    context 'when valid' do
+      it 'creates a new venue' do
+        post '/api/v1/venues', {venue: {name: 'Mobtown Ballroom', location: 'Baltimore', capacity: 200}}
 
+        venue = Venue.first
+        response_body = JSON.parse(response.body)
+        expect(response).to be_success
+        expect(Venue.count).to eq(1)
+        expect(venue.name).to eq("Mobtown Ballroom")
+        expect(venue.location).to eq("Baltimore")
+        expect(venue.capacity).to eq(200)
+        expect(response_body["name"]).to eq("Mobtown Ballroom")
+      end
+    end
+
+    context 'when invalid' do
+      it 'returns an error status and message' do
+        post '/api/v1/venues', {venue: {location: 'Baltimore', capacity: 200}}
+
+        response_body = JSON.parse(response.body)
+        expect(response.status).to eq(500)
+        expect(response_body).to eq({"name" => ["can't be blank"]})
+      end
+    end
   end
 
   describe 'patch /venues/:id' do
