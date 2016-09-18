@@ -25,6 +25,12 @@ module Api
       end
 
       def update
+        venue = Venue.find(params[:id])
+        if venue.update(venue_params)
+          render json: venue
+        else
+          render json: venue.errors, status: 500
+        end
       end
 
       def destroy
