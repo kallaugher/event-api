@@ -79,6 +79,22 @@ describe 'Venue API' do
   end
 
   describe 'destroy /venues/:id' do
+    context 'it exists' do
+      it 'destroys the venue record' do
+        Venue.create(name: 'Mobtown Ballroom', location: 'Baltimore', capacity: 200)
+        delete '/api/v1/venues/1'
+        expect(response).to be_success
+        expect(Venue.count).to eq(0)
+      end
 
+      context 'it does not exist' do
+        it 'returns an error message and a 404 status' do
+          delete '/api/v1/venues/1'
+          response_body = JSON.parse(response.body)
+          expect(response.status).to eq(404)
+          expect(response_body).to eq({"error" => "venue with id of 1 not found"})
+        end
+      end
+    end
   end
 end

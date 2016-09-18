@@ -34,6 +34,13 @@ module Api
       end
 
       def destroy
+        venue = Venue.find_by(id: params[:id])
+        if venue
+          venue.destroy
+          head :ok
+        else
+          render json: {"error" => "venue with id of #{params[:id]} not found"}, status: 404
+        end
       end
 
       private
